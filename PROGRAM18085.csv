@@ -1,282 +1,282 @@
-,,,program1,,,,
-,,,,,,,
-,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS
-,,                    (HEX),             (HEX),,,,
-,,,,,,,
-,,C000,AF,,XRA,A,;CLEAR THE ACCUMULATOR
-,,C001,OE,,MVI,"C,OOH",:SET INITIAL CARRY AS ZERO
-,,C002,OO,,,,
-,,C003,21,,LXI,"H,CO4OH",;INTIALIZE MEMORY POINTER AT CO4OH
-,,C004,4O,,,,
-,,C005,CO,,,,
-,,C006,7E,,MOV,"A,M",;COPY FIRST BYTE INTO  REG A
-,,C007,23,,INX,H,;POINT TOWARDS NEXT BYTE 
-,,C008,86,,ADD,M,;ADD First BYTE & SECOND BYTE 
-,,C009,D2,,JNC,NEXT,";IF CY=0 , GO TO LABEL NEXT "
-,,COOA,OD,,,,
-,,COOB,CO,,,,
-,,COOC,OC,,INR,C,";IF CY=1 , INCREMENTS CONTENT OF REG C BY 1"
-,,COOD,23,NEXT:,INX,H,;POINT TOWARDS NEXT MEMORY LOCATION
-,,COOE,77,,MOV,"M,A",;STORE SUM AT NEXT MEMORY LOCATION
-,,COOF,23,,INX,H,;POINT TOWARDS NEXT MEMORY LOCATION
-,,CO10,71,,MOV,"M,C",;STORE CARRY IN NEXT CONSECUTIVE MEMORY LOCATION
-,,CO11,CF,,RST,1,;STOP PROGRAM EXECUTION
-,,,,,,,
-,,,,,,,
-BEFORE EXECUTION,,,,,,AFTER EXECUTION,
-,,,,,,,
-MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA
-(HEX),(HEX),,,,,(HEX),(HEX)
-C040,O2,,,,,C040,O2
-C041,O3,,,,,C041,O3
-C042,XX,,,,,C042,O5
-C043,YY,,,,,C043,OO
-,,,,,,,
-,,,,,,,
-,,,,,,,
-REG IN HEX,,,,,,,
-,,,,,,,
-A,C,H,L,,,,
-O5,OO,CO,43,,,,
-,,,,,,,
-,,,,,,,
-FLAG REGISTER IN HEX =  ,O4,,,,,,
-,,,,,,,
-BIT PATTERN OF FLAG REGISTER ,,,,,,,
-,,,,,,,
-S,Z,X,AC,X ,P,X  ,CY
-O,O,O,O,O,1,O,O
-,,,,,,,
-,,,,,,,
-,,,program2,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS
-,,                    (HEX),             (HEX),,,,
-,,,,,,,
-,,C000,AF,,XRA,A,;CLEAR THE ACCUMULATOR
-,,C001,21,,LXI,"H,CO3OH",;INITALIZE MEMORY POINTER TO SUBTRAHEND
-,,C002,3O,,,,
-,,C003,CO,,,,
-,,C004,46,,MOV,"B,M",;COPY SUBTRAHEND TO REG B
-,,C005,23,,INX,H,;POINT TOWARDS NEXT MEMORY LOCATION
-,,C006,7E,,MOV,"A,M",: Copy minuend to Reg. A
-,,C007,9O,,SUB,B,Subtract contents of Reg. B from Contents of Reg. A
-,,C008,F2,,JP,DOWN,"If S-0, Transfer Program Control to Label DOWN"
-,,C009,OE,,,,
-,,COOA,CO,,,,
-,,COOB,2F,,CMA,,Find 1'S Compliment of contents of Reg. A
-,,COOC,CO,,ADI,O1H,ADD 01H into contents of Reg. A
-,,COOD,O1,,,,
-,,COOE,23,DOWN,INX,H,Point towards next memory location
-,,COOF,77,,MOV,"M,A",Store absolute difference into memory location
-,,CO10,CF,,RST,1,Stop Program Execution
-,,,,,,,
-,,,,,,,
-,,,,,,,
-CASE1,MINUNED >SUBTRAHED,,,,,,
-,,,,,,,
-BEFORE EXECUTION,,,,,,AFTER EXECUTION,
-,,,,,,,
-MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA
-(HEX),(HEX),,,,,(HEX),(HEX)
-C03O,O5,,,,,C030,O5
-C031,O3,,,,,CO31,O3
-C032,XX,,,,,CO32,O2
-,,,,,,,
-,,,,,,,
-REG IN HEX,,,,,,,
-,,,,,,,
-A,B,H,L,,,,
-O2,O5,CO,32,,,,
-,,,,,,,
-FLAG REGISTER IN HEX =  ,10,,,,,,
-,,,,,,,
-BIT PATTERN OF FLAG REGISTER ,,,,,,,
-S,Z,X,AC,X ,P,X  ,CY
-O,O,O,1,O,O,O,O
-,,,,,,,
-CASE2 ,MINUEND<SUBTRAHEND,,,,,,
-BEFORE EXECUTION,,,,,,AFTER EXECUTION,
-MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA
-(HEX),(HEX),,,,,(HEX),(HEX)
-C03O,O6,,,,,C03O,O6
-C031,O8,,,,,C031,O8
-C032,XX,,,,,C032,O2
-,,,,,,,
-REG IN HEX,,,,,,,
-,,,,,,,
-A,B,H,L,,,,
-O2,O6,CO,32,,,,
-,,,,,,FLAG REGISTER IN HEX =  ,1O
-,,,,,,,
-BIT PATTERN OF FLAG REGISTER ,,,,,,,
-S,Z,X,AC,X ,P,X  ,CY
-O,O,O,1,O,O,O,O
-,,,,,,,
-,,,,,,,
-,,,PROGRAM 3 MULTI,,,,
-,,,,,,,
-,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS
-,,                    (HEX),             (HEX),,,,
-,,,,,,,
-,,C000,AF,,XRA,A,;CLEAR THE ACCUMULATOR
-,,C001,16,,MVI,"D,OOH",Store Initial Carry in Reg.D
-,,C002,OO,,,,
-,,C003,21,,LXI,"H,CO3OH",Initialize memory pointer to multiplicand
-,,C004,3O,,,,
-,,C005,CO,,,,
-,,C006,46,,MOV,"B,M",: Copy minuend to Reg. B
-,,C007,23,,INX,H,Point towards next memory location
-,,C008,4E,,MOV,"C,M",Copy multiplier into Reg.C
-,,C009,88,UP,ADD,B,Add multiplicand into contents of Reg. A
-,,COOA,D2,,JNC,DOWN,";If CY = 0, Transfer Program Control to Label DOWN"
-,,COOB,OE,,,,
-,,COOC,CO,,,,
-,,COOD,14,,INR,D,; Increment Carry by 1
-,,COOE,OD,,DCR,C,Decrement contents of Reg.C by 1
-,,COOF,C2,,JNZ,UP,IF Z=O TRANSFER PROGRAM CONTROL TO LABEL UP
-,,CO1O,O9,,,,
-,,CO11,CO,,,,
-,,CO12,23,,INX,H,Point towards next memory location
-,,CO13,77,,MOV,"M,A",Copy Product into Memory location C032H
-,,CO14,23,,INX,H,;Point towards next memory location
-,,CO15,72,,MOV,"M,D",;Store Carry into next memory location
-,,CO16,CF,,RST,1,Stop Program Execution
-,,,,,,,
-BEFORE EXECUTION,,,,,,AFTER EXECUTION,
-MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA
-(HEX),(HEX),,,,,(HEX),(HEX)
-C03O,O6,,,,,C03O,O6
-C031,O2,,,,,C031,O2
-C032,XX,,,,,C032,12
-CO33,YY,,,,,CO33,OO
-,,,,,,,
-REG IN HEX,,,,,,,
-A,B,C,D,H,L,,
-O6,O2,OO,OO,CO,33,,
-,,,,,,,
-FLAG REGISTER IN HEX =  ,,54,,,,,
-,,,,,,,
-BIT PATTERN OF FLAG REGISTER,,,,,,,
-S,Z,X,AC,X ,P,X  ,CY
-O,1,O,1,O,1,O,O
-,,,,,,,
-,,,PROGRAM4  DIVISION,,,,
-,,,,,,,
-,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS
-,,                    (HEX),             (HEX),,,,
-,,,,,,,
-,,C000,AF,,XRA,A,Clear accumulator to store initial Remainder
-,,C001,OE,,MVI,"C,OOH",Store initial Quotient as 00H in Reg.C
-,,C002,OO,,,,
-,,C003,21,,LXI,"H,CO3OH",Point towards Dividend at memory location C030H
-,,C004,3O,,,,
-,,C005,CO,,,,
-,,C006,7E,,MOV,"A,M",Copy Dividend into Reg.A
-,,C007,23,,INX,H,Point towards next memory location
-,,C008,BE,UP,CMP,M,Compare Dividend with Divisor
-,,C009,ADA,,JC,DOWN,: If Dividend < Divisor i.e.CY = 1 GO TO Label DOWN
-,,COOA,11,,,,
-,,COOB,CO,,,,
-,,COOC,96,,SUB,M,If Dividend > Divisor i.e CY = 0 Subtract Divisor from Dividend
-,,COOD,OC,,INR,C,Increment Quotient by 1
-,,COOE,C3,,JMP,UP,; Transfer program control to Label UP
-,,COOF,O8,,,,
-,,CO10,CO,,,,
-,,CO11,23,DOWN,INX,H,;Point towards next memory location
-,,CO12,71,,MOV,"M,C",Store the Quotient in current memory location
-,,CO13,23,,INX,H,Point towards next memory location
-,,CO14,77,,MOV,"M,A",Store Remainder in current memory location
-,,C015,CF,,RST,1,Stop Program Execution
-,,,,,,,
-CASE1,DIVIDEND>DIVISOR,,,,,,
-BEFORE EXECUTION,,,,,,AFTER EXECUTION,
-,,,,,,,
-MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA
-(HEX),(HEX),,,,,(HEX),(HEX)
-C03O,O4,,,,,C03O,O4
-C031,O2,,,,,C031,O2
-C032,XX,,,,,C032,O2
-CO33,YY,,,,,CO33,YY
-,,,,,,,
-REGISTER IN HEX ,,,,,,,
-,,,,,,,
-A,C,H,L,,,,
-OO,O2,CO,33,,,,
-,,,,,,,
-FLAG REGISTER CONTENT IN HEX = 81 ,,,,,,,
-,,,,,,,
-BIT PATTERN OF FLAG REGISTER ,,,,,,,
-,,,,,,,
-S,Z,X,AC,X ,P,X  ,CY
-1,O,O,O,O,O,O,1
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,program5 bcd ,,,,
-,,,,,,,
-,,Column1,Column2,Column3,Column4,Column5,Column6
-,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS
-,,         (HEX),             (HEX),,,,
-,,,,,,,
-,,C000,,,XRA,A,Clear accumulator to store initial SUM.
-,,C001,,,MOV,"B,A",Set initial carry as 00H as contents of Reg. B
-,,C002,,,LXI,"H,COFFH",Point towards memory location COFFH
-,,C003,FF,,,,
-,,C004,CO,,,,
-,,C005,,,MOV,"C,M",Set Counter as Reg. C
-,,C006,,UP:,INX,H,Point towards next memory location
-,,C007,,,ADD,M,Add memory contents with contents of Reg.A
-,,C008,,,DAA,,Decimal Adjust Accumulator
-,,C009,,,JNC,DOWN,"IFCY=0,GO TO Label DOWN"
-,,COOA,OD,,,,
-,,COOB,CO,,,,
-,,COOC,,,INR,B,"If CY 1, Increment contents of Reg. B by 1"
-,,COOD,,DOWN;,DCR,C,Decrement counter by 1
-,,COOE,,,JNZ,UP,"if contents of Reg.C?0, GO TO Label UP"
-,,COOF,O6,,,,
-,,CO10,CO,,,,
-,,CO11,,,STA,CO6OH,Store the Sum at memory location C060H.
-,,CO12,60,,,,
-,,CO13,CO,,,,
-,,CO14,,,MOV,"A,B",Store carry in Reg.A
-,,CO15,,,ADI,OOH,Add immediate 00H into Reg.A
-,,CO16,OO,,,,
-,,CO17,,,DAA,,Decimal Adjust Accumulator
-,,CO18,,,STA,CO61H,Store Carry at memory location C061H
-,,CO19,61,,,,
-,,CO1A,CO,,,,
-,,CO1B,CF,,RST,1,Stop Program Execution
-,,,,,,,
-,,,,,,,
-BEFORE,,,,,,,AFTER EXECUTION 
-,,,,,,,
-Column1,Column2,,,,,Column1,Column2
-MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA
-(HEX),(HEX),,,,,(HEX),(HEX)
-COFF,O5,,,,,COFF,O5
-C1OO,O1,,,,,C1OO,O1
-C1O1,O2,,,,,C1O1,O2
-C1O2,O3,,,,,C1O2,O3
-C1O3,O4,,,,,C1O3,O4
-C1O4,O5,,,,,C1O4,O5
-CO6O,XX,,,,,CO6O,15
-CO61,YY,,,,,CO61,OO
-,,,,,,,
-,,,,,,,
-,,,,,,,
-REG CONTENT IN HEX ,,,,,,,
-,,,,,,,
-Column1,Column2,Column3,Column4,Column5,,,
-A,B,C,H,L,,,
-OO,OO,OO,C1,O4,,,
-,,,,,,,
-FLAG REGISTER CONTENT IN HEX =,,,44,,,,
-,,,,,,,
-BIT PATTERN OF FLAG REGISTER ,,,,,,,
-S,Z,X,AC,X ,P,X  ,CY
-O,1,O,O,O,1,O,O
+,,,program1,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS,,,,,,,,,,
+,,                    (HEX),             (HEX),,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,C000,AF,,XRA,A,;CLEAR THE ACCUMULATOR,,,,,,,,,,
+,,C001,OE,,MVI,"C,OOH",:SET INITIAL CARRY AS ZERO,,,,,,,,,,
+,,C002,OO,,,,,,,,,,,,,,
+,,C003,21,,LXI,"H,CO4OH",;INTIALIZE MEMORY POINTER AT CO4OH,,,,,,,,,,
+,,C004,4O,,,,,,,,,,,,,,
+,,C005,CO,,,,,,,,,,,,,,
+,,C006,7E,,MOV,"A,M",;COPY FIRST BYTE INTO  REG A,,,,,,,,,,
+,,C007,23,,INX,H,;POINT TOWARDS NEXT BYTE ,,,,,,,,,,
+,,C008,86,,ADD,M,;ADD First BYTE & SECOND BYTE ,,,,,,,,,,
+,,C009,D2,,JNC,NEXT,";IF CY=0 , GO TO LABEL NEXT ",,,,,,,,,,
+,,COOA,OD,,,,,,,,,,,,,,
+,,COOB,CO,,,,,,,,,,,,,,
+,,COOC,OC,,INR,C,";IF CY=1 , INCREMENTS CONTENT OF REG C BY 1",,,,,,,,,,
+,,COOD,23,NEXT:,INX,H,;POINT TOWARDS NEXT MEMORY LOCATION,,,,,,,,,,
+,,COOE,77,,MOV,"M,A",;STORE SUM AT NEXT MEMORY LOCATION,,,,,,,,,,
+,,COOF,23,,INX,H,;POINT TOWARDS NEXT MEMORY LOCATION,,,,,,,,,,
+,,CO10,71,,MOV,"M,C",;STORE CARRY IN NEXT CONSECUTIVE MEMORY LOCATION,,,,,,,,,,
+,,CO11,CF,,RST,1,;STOP PROGRAM EXECUTION,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+BEFORE EXECUTION,,,,,,AFTER EXECUTION,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA,,,,,,,,,,
+(HEX),(HEX),,,,,(HEX),(HEX),,,,,,,,,,
+C040,O2,,,,,C040,O2,,,,,,,,,,
+C041,O3,,,,,C041,O3,,,,,,,,,,
+C042,XX,,,,,C042,O5,,,,,,,,,,
+C043,YY,,,,,C043,OO,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+REG IN HEX,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+A,C,H,L,,,,,,,,,,,,,,
+O5,OO,CO,43,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+FLAG REGISTER IN HEX =  ,O4,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+BIT PATTERN OF FLAG REGISTER ,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+S,Z,X,AC,X ,P,X  ,CY,,,,,,,,,,
+O,O,O,O,O,1,O,O,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,program2,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS,,,,,,,,,,
+,,                    (HEX),             (HEX),,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,C000,AF,,XRA,A,;CLEAR THE ACCUMULATOR,,,,,,,,,,
+,,C001,21,,LXI,"H,CO3OH",;INITALIZE MEMORY POINTER TO SUBTRAHEND,,,,,,,,,,
+,,C002,3O,,,,,,,,,,,,,,
+,,C003,CO,,,,,,,,,,,,,,
+,,C004,46,,MOV,"B,M",;COPY SUBTRAHEND TO REG B,,,,,,,,,,
+,,C005,23,,INX,H,;POINT TOWARDS NEXT MEMORY LOCATION,,,,,,,,,,
+,,C006,7E,,MOV,"A,M",: Copy minuend to Reg. A,,,,,,,,,,
+,,C007,9O,,SUB,B,Subtract contents of Reg. B from Contents of Reg. A,,,,,,,,,,
+,,C008,F2,,JP,DOWN,"If S-0, Transfer Program Control to Label DOWN",,,,,,,,,,
+,,C009,OE,,,,,,,,,,,,,,
+,,COOA,CO,,,,,,,,,,,,,,
+,,COOB,2F,,CMA,,Find 1'S Compliment of contents of Reg. A,,,,,,,,,,
+,,COOC,CO,,ADI,O1H,ADD 01H into contents of Reg. A,,,,,,,,,,
+,,COOD,O1,,,,,,,,,,,,,,
+,,COOE,23,DOWN,INX,H,Point towards next memory location,,,,,,,,,,
+,,COOF,77,,MOV,"M,A",Store absolute difference into memory location,,,,,,,,,,
+,,CO10,CF,,RST,1,Stop Program Execution,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+CASE1,MINUNED >SUBTRAHED,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+BEFORE EXECUTION,,,,,,AFTER EXECUTION,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA,,,,,,,,,,
+(HEX),(HEX),,,,,(HEX),(HEX),,,,,,,,,,
+C03O,O5,,,,,C030,O5,,,,,,,,,,
+C031,O3,,,,,CO31,O3,,,,,,,,,,
+C032,XX,,,,,CO32,O2,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+REG IN HEX,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+A,B,H,L,,,,,,,,,,,,,,
+O2,O5,CO,32,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+FLAG REGISTER IN HEX =  ,10,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+BIT PATTERN OF FLAG REGISTER ,,,,,,,,,,,,,,,,,
+S,Z,X,AC,X ,P,X  ,CY,,,,,,,,,,
+O,O,O,1,O,O,O,O,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+CASE2 ,MINUEND<SUBTRAHEND,,,,,,,,,,,,,,,,
+BEFORE EXECUTION,,,,,,AFTER EXECUTION,,,,,,,,,,,
+MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA,,,,,,,,,,
+(HEX),(HEX),,,,,(HEX),(HEX),,,,,,,,,,
+C03O,O6,,,,,C03O,O6,,,,,,,,,,
+C031,O8,,,,,C031,O8,,,,,,,,,,
+C032,XX,,,,,C032,O2,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+REG IN HEX,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+A,B,H,L,,,,,,,,,,,,,,
+O2,O6,CO,32,,,,,,,,,,,,,,
+,,,,,,FLAG REGISTER IN HEX =  ,1O,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+BIT PATTERN OF FLAG REGISTER ,,,,,,,,,,,,,,,,,
+S,Z,X,AC,X ,P,X  ,CY,,,,,,,,,,
+O,O,O,1,O,O,O,O,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,PROGRAM 3 MULTI,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS,,,,,,,,,,
+,,                    (HEX),             (HEX),,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,C000,AF,,XRA,A,;CLEAR THE ACCUMULATOR,,,,,,,,,,
+,,C001,16,,MVI,"D,OOH",Store Initial Carry in Reg.D,,,,,,,,,,
+,,C002,OO,,,,,,,,,,,,,,
+,,C003,21,,LXI,"H,CO3OH",Initialize memory pointer to multiplicand,,,,,,,,,,
+,,C004,3O,,,,,,,,,,,,,,
+,,C005,CO,,,,,,,,,,,,,,
+,,C006,46,,MOV,"B,M",: Copy minuend to Reg. B,,,,,,,,,,
+,,C007,23,,INX,H,Point towards next memory location,,,,,,,,,,
+,,C008,4E,,MOV,"C,M",Copy multiplier into Reg.C,,,,,,,,,,
+,,C009,88,UP,ADD,B,Add multiplicand into contents of Reg. A,,,,,,,,,,
+,,COOA,D2,,JNC,DOWN,";If CY = 0, Transfer Program Control to Label DOWN",,,,,,,,,,
+,,COOB,OE,,,,,,,,,,,,,,
+,,COOC,CO,,,,,,,,,,,,,,
+,,COOD,14,,INR,D,; Increment Carry by 1,,,,,,,,,,
+,,COOE,OD,,DCR,C,Decrement contents of Reg.C by 1,,,,,,,,,,
+,,COOF,C2,,JNZ,UP,IF Z=O TRANSFER PROGRAM CONTROL TO LABEL UP,,,,,,,,,,
+,,CO1O,O9,,,,,,,,,,,,,,
+,,CO11,CO,,,,,,,,,,,,,,
+,,CO12,23,,INX,H,Point towards next memory location,,,,,,,,,,
+,,CO13,77,,MOV,"M,A",Copy Product into Memory location C032H,,,,,,,,,,
+,,CO14,23,,INX,H,;Point towards next memory location,,,,,,,,,,
+,,CO15,72,,MOV,"M,D",;Store Carry into next memory location,,,,,,,,,,
+,,CO16,CF,,RST,1,Stop Program Execution,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+BEFORE EXECUTION,,,,,,AFTER EXECUTION,,,,,,,,,,,
+MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA,,,,,,,,,,
+(HEX),(HEX),,,,,(HEX),(HEX),,,,,,,,,,
+C03O,O6,,,,,C03O,O6,,,,,,,,,,
+C031,O2,,,,,C031,O2,,,,,,,,,,
+C032,XX,,,,,C032,12,,,,,,,,,,
+CO33,YY,,,,,CO33,OO,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+REG IN HEX,,,,,,,,,,,,,,,,,
+A,B,C,D,H,L,,,,,,,,,,,,
+O6,O2,OO,OO,CO,33,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+FLAG REGISTER IN HEX =  ,,54,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+BIT PATTERN OF FLAG REGISTER,,,,,,,,,,,,,,,,,
+S,Z,X,AC,X ,P,X  ,CY,,,,,,,,,,
+O,1,O,1,O,1,O,O,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,PROGRAM4  DIVISION,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS,,,,,,,,,,
+,,                    (HEX),             (HEX),,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,C000,AF,,XRA,A,Clear accumulator to store initial Remainder,,,,,,,,,,
+,,C001,OE,,MVI,"C,OOH",Store initial Quotient as 00H in Reg.C,,,,,,,,,,
+,,C002,OO,,,,,,,,,,,,,,
+,,C003,21,,LXI,"H,CO3OH",Point towards Dividend at memory location C030H,,,,,,,,,,
+,,C004,3O,,,,,,,,,,,,,,
+,,C005,CO,,,,,,,,,,,,,,
+,,C006,7E,,MOV,"A,M",Copy Dividend into Reg.A,,,,,,,,,,
+,,C007,23,,INX,H,Point towards next memory location,,,,,,,,,,
+,,C008,BE,UP,CMP,M,Compare Dividend with Divisor,,,,,,,,,,
+,,C009,ADA,,JC,DOWN,: If Dividend < Divisor i.e.CY = 1 GO TO Label DOWN,,,,,,,,,,
+,,COOA,11,,,,,,,,,,,,,,
+,,COOB,CO,,,,,,,,,,,,,,
+,,COOC,96,,SUB,M,If Dividend > Divisor i.e CY = 0 Subtract Divisor from Dividend,,,,,,,,,,
+,,COOD,OC,,INR,C,Increment Quotient by 1,,,,,,,,,,
+,,COOE,C3,,JMP,UP,; Transfer program control to Label UP,,,,,,,,,,
+,,COOF,O8,,,,,,,,,,,,,,
+,,CO10,CO,,,,,,,,,,,,,,
+,,CO11,23,DOWN,INX,H,;Point towards next memory location,,,,,,,,,,
+,,CO12,71,,MOV,"M,C",Store the Quotient in current memory location,,,,,,,,,,
+,,CO13,23,,INX,H,Point towards next memory location,,,,,,,,,,
+,,CO14,77,,MOV,"M,A",Store Remainder in current memory location,,,,,,,,,,
+,,C015,CF,,RST,1,Stop Program Execution,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+CASE1,DIVIDEND>DIVISOR,,,,,,,,case2,DIVISOR>DIVIDEND,,,,,,,
+BEFORE EXECUTION,,,,,,AFTER EXECUTION,,,,BEFORE,,,,,,AFTER,
+,,,,,,,,,,,,,,,,,
+MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA,,,MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA
+(HEX),(HEX),,,,,(HEX),(HEX),,,(HEX),(HEX),,,,,(HEX),(HEX)
+C03O,O4,,,,,C03O,O4,,,C03O,O2,,,,,C03O,O2
+C031,O2,,,,,C031,O2,,,C031,O4,,,,,C031,O4
+C032,XX,,,,,C032,O2,,,C032,XX,,,,,C032,OO
+CO33,YY,,,,,CO33,YY,,,CO33,YY,,,,,CO33,O2
+,,,,,,,,,,,,,,,,,
+REGISTER IN HEX ,,,,,,,,,,REGISTER IN HEX ,,,,,,,
+,,,,,,,,,,,,,,,,,
+A,C,H,L,,,,,,,,A,C,H,L,,,
+OO,O2,CO,33,,,,,,,,O2,3O,CO,33,,,
+,,,,,,,,,,,,,,,,,
+FLAG REGISTER CONTENT IN HEX = 81 ,,,,,,,,,,FLAG REGISTER CONTENT IN HEX = 81 ,,,,,,,
+,,,,,,,,,,,,,,,,,
+BIT PATTERN OF FLAG REGISTER ,,,,,,,,,,BIT PATTERN OF FLAG REGISTER ,,,,,,,
+,,,,,,,,,,,,,,,,,
+S,Z,X,AC,X ,P,X  ,CY,,,S,Z,X,AC,X ,P,X  ,CY
+1,O,O,O,O,O,O,1,,,1,O,O,O,O,O,O,1
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,program5 bcd ,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,Column1,Column2,Column3,Column4,Column5,Column6,,,,,,,,,,
+,,MEMORY ADDRESS,MACHINE CODE,LABEL,OPCODE,OPERAND,COMMENTS,,,,,,,,,,
+,,         (HEX),             (HEX),,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,C000,,,XRA,A,Clear accumulator to store initial SUM.,,,,,,,,,,
+,,C001,,,MOV,"B,A",Set initial carry as 00H as contents of Reg. B,,,,,,,,,,
+,,C002,,,LXI,"H,COFFH",Point towards memory location COFFH,,,,,,,,,,
+,,C003,FF,,,,,,,,,,,,,,
+,,C004,CO,,,,,,,,,,,,,,
+,,C005,,,MOV,"C,M",Set Counter as Reg. C,,,,,,,,,,
+,,C006,,UP:,INX,H,Point towards next memory location,,,,,,,,,,
+,,C007,,,ADD,M,Add memory contents with contents of Reg.A,,,,,,,,,,
+,,C008,,,DAA,,Decimal Adjust Accumulator,,,,,,,,,,
+,,C009,,,JNC,DOWN,"IFCY=0,GO TO Label DOWN",,,,,,,,,,
+,,COOA,OD,,,,,,,,,,,,,,
+,,COOB,CO,,,,,,,,,,,,,,
+,,COOC,,,INR,B,"If CY 1, Increment contents of Reg. B by 1",,,,,,,,,,
+,,COOD,,DOWN;,DCR,C,Decrement counter by 1,,,,,,,,,,
+,,COOE,,,JNZ,UP,"if contents of Reg.C?0, GO TO Label UP",,,,,,,,,,
+,,COOF,O6,,,,,,,,,,,,,,
+,,CO10,CO,,,,,,,,,,,,,,
+,,CO11,,,STA,CO6OH,Store the Sum at memory location C060H.,,,,,,,,,,
+,,CO12,60,,,,,,,,,,,,,,
+,,CO13,CO,,,,,,,,,,,,,,
+,,CO14,,,MOV,"A,B",Store carry in Reg.A,,,,,,,,,,
+,,CO15,,,ADI,OOH,Add immediate 00H into Reg.A,,,,,,,,,,
+,,CO16,OO,,,,,,,,,,,,,,
+,,CO17,,,DAA,,Decimal Adjust Accumulator,,,,,,,,,,
+,,CO18,,,STA,CO61H,Store Carry at memory location C061H,,,,,,,,,,
+,,CO19,61,,,,,,,,,,,,,,
+,,CO1A,CO,,,,,,,,,,,,,,
+,,CO1B,CF,,RST,1,Stop Program Execution,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+BEFORE,,,,,,,AFTER EXECUTION ,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+Column1,Column2,,,,,Column1,Column2,,,,,,,,,,
+MEMORY ADDRESS,DATA,,,,,MEMORY ADDRESS,DATA,,,,,,,,,,
+(HEX),(HEX),,,,,(HEX),(HEX),,,,,,,,,,
+COFF,O5,,,,,COFF,O5,,,,,,,,,,
+C1OO,O1,,,,,C1OO,O1,,,,,,,,,,
+C1O1,O2,,,,,C1O1,O2,,,,,,,,,,
+C1O2,O3,,,,,C1O2,O3,,,,,,,,,,
+C1O3,O4,,,,,C1O3,O4,,,,,,,,,,
+C1O4,O5,,,,,C1O4,O5,,,,,,,,,,
+CO6O,XX,,,,,CO6O,15,,,,,,,,,,
+CO61,YY,,,,,CO61,OO,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+REG CONTENT IN HEX ,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+Column1,Column2,Column3,Column4,Column5,,,,,,,,,,,,,
+A,B,C,H,L,,,,,,,,,,,,,
+OO,OO,OO,C1,O4,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+FLAG REGISTER CONTENT IN HEX =,,,44,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+BIT PATTERN OF FLAG REGISTER ,,,,,,,,,,,,,,,,,
+S,Z,X,AC,X ,P,X  ,CY,,,,,,,,,,
+O,1,O,O,O,1,O,O,,,,,,,,,,
