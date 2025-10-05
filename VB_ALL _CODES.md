@@ -164,3 +164,20 @@ End Sub
 
 
 
+  MICROPROCESSOR WORKING GUIDE 
+  1) Reset 2) Set 3) C0004  4) Sheet madhle value put karyche inr karat till table last row C011 
+5) Reset 6) set 7) For out put  Ex : CO4O -----> O2 INR , CO41 -----> 03 
+8) Reset 9) Go 10) COOO 11) Exec 
+12) CO42 Machine give answer CO42 ----> 05 INR CO43 ----> 00 
+
+* 1 to 7 input dyacha 
+* 8 to 12 output  bhetnar 
+ 
+For flag register 
+13 ) Reset 14) Go 15) COOO 16) Exec 17) Reg A click  inr   A= value  box madhe lihaychi 
+Reg C click inr c= value 
+Till Reg F 
+
+18) flag register content Reg F chi value aste 
+
+19) Bitt pattern box madhe F chi 2 digit value bhetel ti binary numbers madhey convert karun lihachi 8 boxes madhey
